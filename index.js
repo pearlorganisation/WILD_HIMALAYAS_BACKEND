@@ -6,7 +6,23 @@ import { mongoConnect } from "./configs/db.js";
 
 const app = express();
 const port = 8000 || process.env.PORT;
-app.use(cors());
+app.use(
+  cors(
+    process.env.NODE_ENV === "production"
+      ? {
+          origin: ["http://localhost:3000"],
+          credentials: true,
+        }
+      : {
+          origin: ["http://localhost:3000"],
+          methods: ["GET", "PUT", "POST", "PATCH", "DELETE"],
+          allowedHeaders: ["Content-Type", "Authorization", "x-csrf-token"],
+          credentials: true,
+          maxAge: 600,
+          exposedHeaders: ["*", "Authorization"],
+        }
+  )
+);
 
 // @Desc---Middlewares
 dotenv.config();
