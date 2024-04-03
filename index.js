@@ -10,11 +10,11 @@ app.use(
   cors(
     process.env.NODE_ENV === "production"
       ? {
-          origin: ["http://localhost:3000"],
+          origin: ["http://localhost:5173"],
           credentials: true,
         }
       : {
-          origin: ["http://localhost:3000"],
+          origin: ["http://localhost:5173"],
           methods: ["GET", "PUT", "POST", "PATCH", "DELETE"],
           allowedHeaders: ["Content-Type", "Authorization", "x-csrf-token"],
           credentials: true,
