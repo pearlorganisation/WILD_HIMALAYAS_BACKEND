@@ -27,7 +27,8 @@ export const signup = asyncHandler(async (req, res, next) => {
      const currentDate = new Date();
 
     //deleting expired otp
-    await auth.deleteMany({expiresAt:{$lt: currentDate}});
+    
+    // await auth.deleteMany({expiresAt:{$lt: currentDate}});
 
   
 
@@ -49,7 +50,7 @@ export const signup = asyncHandler(async (req, res, next) => {
   // await newDoc.save();
   res
     .status(201)
-    .json({ status: true, message: "Created successfully!!", newDoc });
+    .json({ status: true, message: "Verification email successfully sent to your email !!", newDoc });
 });
 
 // @desc - login user
