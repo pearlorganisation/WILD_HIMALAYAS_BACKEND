@@ -36,9 +36,11 @@ app.listen(port, () => {
 import authRoutes from "./src/routes/auth.js";
 import trekRoutes from "./src/routes/trek.js";
 import { error } from "./src/middlewares/error.js";
+import mailRoutes from "./src/routes/mail.js"
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/trek", trekRoutes);
+app.use("/api/v1/mail", mailRoutes);
 
 app.use("/", (req, res) => {
   res.send("Welcome to wild himalayas");
