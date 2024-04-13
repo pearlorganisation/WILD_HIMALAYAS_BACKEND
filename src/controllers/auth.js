@@ -3,17 +3,50 @@ import errorResponse from "../../utils/errorResponse.js";
 import auth from "../models/auth.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { generateSignupToken } from "../../utils/other.js";
+import { sendMail } from "../../utils/sendMail.js";
+
+
 
 // @desc - register new user
 // @route - POST api/v1/auth/signup
 export const signup = asyncHandler(async (req, res, next) => {
   const { email, password } = req?.body;
+  const otp =generateSignupToken(email);
   const hashedPassword = await bcrypt.hash(password, 10);
-  const newDoc = new auth({ ...req?.body, password: hashedPassword });
+  const newDoc = new auth({ ...req?.body, password: hashedPassword,
+    otp,
+    expiresAt: new Date(Date.now() + 300000), //expiry time of otp 5mins 
+  });
   const existingUser = await auth.findOne({ email });
   if (existingUser)
     return next(new errorResponse("User already exists!!", 400));
-  await newDoc.save();
+
+///// nodemailer ////////
+    
+     const currentDate = new Date();
+
+    //deleting expired otp
+    await auth.deleteMany({expiresAt:{$lt: currentDate}});
+
+  
+
+    sendMail(email,otp).then(
+      async()=>{
+        await newDoc.save().then(() => {
+          return res
+            .status(200)
+            .json({ success: true, message: "Mail sent successfully" });
+        });}
+      
+      ).catch((error) => {
+        return res.status(400).json({
+          success: false,
+          message: `Unable to send mail! ${error.message}`,
+        });
+      });
+
+  // await newDoc.save();
   res
     .status(201)
     .json({ status: true, message: "Created successfully!!", newDoc });
