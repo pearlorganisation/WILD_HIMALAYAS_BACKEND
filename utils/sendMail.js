@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-export const sendMail = async (email, otp
+export const sendMail = async (email,finalUrl
 ) => {
 
      // transporter - configuration of admin/user to send mail from
@@ -22,7 +22,7 @@ export const sendMail = async (email, otp
 
       const templatePath = path.join(__dirname,`../views/emailVerification.ejs`);
 
-      let data = await ejs.renderFile(templatePath,{email,otp});
+      let data = await ejs.renderFile(templatePath,{email,finalUrl});
 
       let   mailOptions = {
         from: "avnish@pearlorganisation.com",

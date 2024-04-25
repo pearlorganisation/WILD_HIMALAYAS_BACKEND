@@ -5,52 +5,52 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { generateSignupToken } from "../../utils/other.js";
 import { sendMail } from "../../utils/sendMail.js";
-
-
+import signupOtp from "../models/signupOtp.js";
 
 // @desc - register new user
 // @route - POST api/v1/auth/signup
 export const signup = asyncHandler(async (req, res, next) => {
-  const { email, password } = req?.body;
-  const otp =generateSignupToken(email);
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const newDoc = new auth({ ...req?.body, password: hashedPassword,
-    otp,
-    expiresAt: new Date(Date.now() + 300000), //expiry time of otp 5mins 
-  });
+  const {
+    email,
+    password,
+    firstName,
+    lastName,
+    number,
+    weight,
+    dob,
+    city,
+    height,
+  } = req?.body;
+
   const existingUser = await auth.findOne({ email });
   if (existingUser)
     return next(new errorResponse("User already exists!!", 400));
 
-///// nodemailer ////////
-    
-     const currentDate = new Date();
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-    //deleting expired otp
-    
-    // await auth.deleteMany({expiresAt:{$lt: currentDate}});
 
-  
+  const url =
+    process.env.NODE_ENV === "PRODUCTION"
+      ? process.env.FRONTEND_LIVE_URL
+      : process.env.FRONTEND_LOCAL_URL;
 
-    sendMail(email,otp).then(
-      async()=>{
-        await newDoc.save().then(() => {
-          return res
-            .status(200)
-            .json({ success: true, message: "Mail sent successfully" });
-        });}
-      
-      ).catch((error) => {
-        return res.status(400).json({
-          success: false,
-          message: `Unable to send mail! ${error.message}`,
-        });
+  const token = generateSignupToken(req?.body);
+
+  const finalUrl = `${url}/${token}`;
+  ///// nodemailer ////////
+
+  sendMail(email, finalUrl, token)
+    .then(() => {
+      return res
+        .status(200)
+        .json({ success: true, message: "Mail sent successfully" });
+    })
+    .catch((error) => {
+      res.status(400).json({
+        success: false,
+        message: `Unable to send mail! ${error.message}`,
       });
-
-  // await newDoc.save();
-  res
-    .status(201)
-    .json({ status: true, message: "Verification email successfully sent to your email !!", newDoc });
+    });
 });
 
 // @desc - login user

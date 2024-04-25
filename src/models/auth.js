@@ -45,11 +45,15 @@ export const authSchema = new mongoose.Schema(
       required: [true, "height is required!!"],
 
     },
-    otp: String,
-    expiresAt: {
-      type: Date,
+    emailVerified: {
+      type: Boolean,
+      default: false,
+    }
+    // otp: String,
+    // expiresAt: {
+    //   type: Date,
       
-    },
+    // },
   },
   { timestamps: true, expireAfterSeconds: 300 } // 5minutes
 );
