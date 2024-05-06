@@ -14,7 +14,7 @@ const trekSchema = new mongoose.Schema(
     season: {
       type: String,
       required: [true, "Trek season is required!!"],
-      enum: ["winter", "pre-winter", "autumn", "monsoon", "spring", "summer"],
+      enum: ["Winter", "Pre-winter", "Autumn", "Monsoon", "Spring", "Summer"],
     },
     price: {
       type: Number,
@@ -22,6 +22,7 @@ const trekSchema = new mongoose.Schema(
     },
     difficulty: {
       type: String,
+      enum:["Easy","Moderate","Hard"],
       required: [true, "Trek difficulty level is required!!"],
     },
     duration: {

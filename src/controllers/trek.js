@@ -9,7 +9,7 @@ export const newTrek = asyncHandler(async (req, res, next) => {
   const newDoc = new trek({
     ...req?.body,
     trekLogo:
-      Array.isArray(trekLogo) && trekLogo?.length >= 1 && trekLogo[0]?.path,
+      Array.isArray(trekLogo) && trekLogo?.length >= 1 && trekLogo[0],
     gallery,
     banners,
   });
@@ -50,6 +50,26 @@ export const deletetrek = asyncHandler(async (req, res, next) => {
   const isValidId = await trek.findByIdAndDelete(req?.params?.id);
   if (!isValidId)
     return new errorResponse("No trek found with given id!!", 400);
+
+  res
+    .status(200)
+    .json({ status: true, message: "Trek deleted successfully!!" });
+});
+
+// @desc - update particular trek
+// @route - GET api/v1/trek/:id
+export const updateTrek = asyncHandler(async (req, res, next) => {
+  const {id} = req?.params
+  const {banners,gallery,trekLogo} = req?.files
+  const existingData= await trek.findById(id)
+
+  const isValidId = await trek.findByIdAndUpdate(id,{
+trekLogo: trekLogo || existingData?.trekLogo
+
+  });
+  if (!isValidId)
+    return new errorResponse("No trek found with given id!!", 400);
+
 
   res
     .status(200)
