@@ -11,10 +11,13 @@ const trekSchema = new mongoose.Schema(
       type: String,
       required: [true, "Description is required!!"],
     },
-    season: {
+    bannerDescription: {
       type: String,
+      required: [true, "Banner Description is required!!"],
+    },
+    season: {
+      type: [],
       required: [true, "Trek season is required!!"],
-      enum: ["Winter", "Pre-winter", "Autumn", "Monsoon", "Spring", "Summer"],
     },
     price: {
       type: Number,
@@ -22,15 +25,15 @@ const trekSchema = new mongoose.Schema(
     },
     difficulty: {
       type: String,
-      enum:["Easy","Moderate","Hard"],
+      enum: ["Easy", "Moderate", "Hard"],
       required: [true, "Trek difficulty level is required!!"],
     },
     duration: {
-      type: Number,
+      type: String,
       required: [true, "Trek duration is required!!"],
     },
     altitude: {
-      type: Number,
+      type: String,
       required: [true, "Trek altitude is required!!"],
     },
     ageLimit: {
@@ -46,7 +49,7 @@ const trekSchema = new mongoose.Schema(
       required: [true, "Trek banners is required!!"],
     },
     trekLogo: {
-      type: String,
+      type: {},
       required: [true, "Trek logo is required!!"],
     },
   },

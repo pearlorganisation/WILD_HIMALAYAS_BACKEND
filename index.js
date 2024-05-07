@@ -10,11 +10,11 @@ app.use(
   cors(
     process.env.NODE_ENV === "production"
       ? {
-          origin: ["http://localhost:5173","http://localhost:5175"],
+          origin: ["http://localhost:5173","http://localhost:5174","http://localhost:5175"],
           credentials: true,
         }
       : {
-          origin: ["http://localhost:5173","http://localhost:5175"],
+          origin: ["http://localhost:5173","http://localhost:5174","http://localhost:5175"],
           methods: ["GET", "PUT", "POST", "PATCH", "DELETE"],
           allowedHeaders: ["Content-Type", "Authorization", "x-csrf-token"],
           credentials: true,
@@ -37,10 +37,12 @@ import authRoutes from "./src/routes/auth.js";
 import trekRoutes from "./src/routes/trek.js";
 import { error } from "./src/middlewares/error.js";
 import mailRoutes from "./src/routes/mail.js"
+import activityRoutes from "./src/routes/activities.js"
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/trek", trekRoutes);
 app.use("/api/v1/mail", mailRoutes);
+app.use("/api/v1/activity", activityRoutes);
 
 app.use("/", (req, res) => {
   res.send("Welcome to wild himalayas");

@@ -4,6 +4,7 @@ import trek from "../models/trek.js";
 
 // @desc - creating new trek
 // @route - POST api/v1/trek
+
 export const newTrek = asyncHandler(async (req, res, next) => {
   const { trekLogo, gallery, banners } = req?.files;
   const newDoc = new trek({
@@ -12,6 +13,7 @@ export const newTrek = asyncHandler(async (req, res, next) => {
       Array.isArray(trekLogo) && trekLogo?.length >= 1 && trekLogo[0],
     gallery,
     banners,
+    season: JSON.parse(req?.body?.season)
   });
   await newDoc.save();
   res
