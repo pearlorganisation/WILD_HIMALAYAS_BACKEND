@@ -8,14 +8,14 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-console.log(
-  process.env.CLOUDINARY_API_SECRET,
-  process.env.CLOUDINARY_API_KEY,
-  process.env.CLOUDINARY_CLOUD_NAME
-);
+
 
 const storage = new CloudinaryStorage({
   cloudinary,
+  params: {
+    folder: "IntoWildHimalaya",
+    allowed_formats: ["jpg", "png", "jpeg","webp","avif"], // Allowed file formats
+  },
 });
 
 const upload = multer({ storage });

@@ -60,11 +60,11 @@ export const login = asyncHandler(async (req, res, next) => {
   const existingUser = await auth.findOne({ email });
 
   if (!existingUser) return next(new errorResponse("No user found!!", 400));
-  // const isValidPassword = await bcrypt.compare(
-  //   password,
-  //   existingUser?.password
-  // );
-  // if (!isValidPassword) return next(new errorResponse("Wrong password!!", 400));
+  const isValidPassword = await bcrypt.compare(
+    password,
+    existingUser?.password
+  );
+  if (!isValidPassword) return next(new errorResponse("Wrong password!!", 400));
 
   const token = jwt.sign(
     { userId: existingUser?._id },
