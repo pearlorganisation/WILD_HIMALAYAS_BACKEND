@@ -5,7 +5,8 @@ import {
   getParticularSeasonTrek,
   newTrek,
 } from "../controllers/trek.js";
-import { upload } from "../../configs/cloudinary.js";
+import upload from "../middlewares/multer.js";
+
 const router = express.Router();
 
 router

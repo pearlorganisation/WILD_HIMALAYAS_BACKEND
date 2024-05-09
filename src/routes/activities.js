@@ -1,6 +1,6 @@
 import express from "express";
 
-import { upload } from "../../configs/cloudinary.js";
+import upload from "../middlewares/multer.js";
 import { deleteActivity, getAllActivities, newActivity } from "../controllers/activities.js";
 const router = express.Router();
 

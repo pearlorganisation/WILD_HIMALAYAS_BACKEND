@@ -22,4 +22,4 @@ banners:{
   },
   { timestamps: true })
 
-  export default mongoose.model("Activities", activitiesSchema, "Activities");
+  export default mongoose.model("activity", activitiesSchema);
