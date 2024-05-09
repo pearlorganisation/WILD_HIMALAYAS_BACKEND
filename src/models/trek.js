@@ -56,4 +56,4 @@ const trekSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Trek", trekSchema, "Trek");
+export default mongoose.model("Trek", trekSchema);

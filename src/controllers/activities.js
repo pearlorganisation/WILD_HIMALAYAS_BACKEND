@@ -1,3 +1,4 @@
+import { cloudinary } from "../../configs/cloudinary.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import errorResponse from "../../utils/errorResponse.js";
 
@@ -6,12 +7,22 @@ import activities from "../models/activities.js";
 // @desc - creating new activity
 // @route - POST api/v1/activity
 export const newActivity = asyncHandler(async (req, res, next) => {
+  const result= cloudinary.uploader.upload(req.files.path)
+
     const { logo, banners } = req?.files;
+      
+    // Upload files to Cloudinary
+   const logoResult = await cloudinary.uploader.upload(logo[0].path);
+   const bannersResults = await Promise.all(banners.map(file => cloudinary.uploader.upload(file.path)));
+
+
+
     const newDoc = new activities({
       ...req?.body,
       logo:
-        Array.isArray(logo) && logo?.length >= 1 && logo[0],
-      banners,
+       logoResult?.secure_url,
+       banners: bannersResults.map(result => result.secure_url),
+      
     });
     await newDoc.save();
     res
