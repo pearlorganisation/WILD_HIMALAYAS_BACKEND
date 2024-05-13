@@ -6,16 +6,16 @@ price:{
     required:[true,"Price is Required"]
 },
 banner:{
-    type:{},
+    type:String,
     required:[true,"Banner is Required"]
 },
 title:{
     type:String,
     required:[true,"Title is Required"]
 },
-activities:{
+activity:{
     type:mongoose.Types.ObjectId,
-    ref:"Activities",
+    ref:"activity",
     required:true
 },
 description:{
@@ -41,7 +41,25 @@ highestPoint:{
 tripHighlights:{
     type:[],
     required:[true,"Highlights is required"]
-}
+},
+itinerary:{
+    type:String,
+    required:[true,"Itinerary is required!!"]
+},
+itineraryLogo:{
+    type: String,
+    required:[true,"Itinerary Logo is required!!"]
+},
+mapLogo:{
+    type:String,
+    required:[true,"Map Logo is required !!"]
+},
+inclusionsAndExclusions:{
+    type:String,
+    required:[true,"Inclu and Exclusion is required !!"]
+},
+
+
 },{timestamps:true})
 
 export default mongoose.model("tour",tourSchema)
