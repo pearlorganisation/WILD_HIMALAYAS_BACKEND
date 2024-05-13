@@ -3,10 +3,6 @@ import mongoose from "mongoose";
 const trekSchema = new mongoose.Schema(
   {
     name: { type: String, required: [true, "Trek name is required!!"] },
-    trekTitle: {
-      type: String,
-      required: [true, "Trek title is required!!"],
-    },
     description: {
       type: String,
       required: [true, "Description is required!!"],

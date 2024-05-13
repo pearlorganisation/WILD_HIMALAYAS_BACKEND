@@ -7,7 +7,7 @@ import trek from "../models/trek.js";
 // @route - POST api/v1/trek
 
 export const newTrek = asyncHandler(async (req, res, next) => {
-  const result= cloudinary.uploader.upload(req.files.path)
+
 
   const { trekLogo, gallery, banners } = req?.files;
 

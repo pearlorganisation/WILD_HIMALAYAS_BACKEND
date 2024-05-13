@@ -7,12 +7,17 @@ import tour from "../models/tour.js";
 // @route - POST api/v1/tour
 
 export const newTour = asyncHandler(async (req, res, next) => {
+  const { mapLogo,itineraryLogo, banner } = req?.files;
 
-  const result = await cloudinary.uploader.upload(req.file.path)
+  const BannerResult = await cloudinary.uploader.upload(banner[0]?.path)
+  const itineraryLogoResult = await cloudinary.uploader.upload(itineraryLogo[0]?.path)
+  const mapLogoResult = await cloudinary.uploader.upload(mapLogo[0]?.path)
 
   const newDoc = new tour({
     ...req?.body,
-    banner: result?.secure_url,
+    banner: BannerResult?.secure_url,
+    itineraryLogo: itineraryLogoResult?.secure_url,
+    mapLogo: mapLogoResult?.secure_url,
     tripHighlights: JSON.parse(req?.body?.tripHighlights),
   });
   await newDoc.save();
@@ -37,7 +42,7 @@ export const deleteTour = asyncHandler(async (req, res, next) => {
 // @route - GET api/v1/tour
 
 export const getAllTours = asyncHandler(async (req, res, next) => {
-  const data = await tour.find();
+  const data = await tour.find().populate("activity");
   res.status(200).json({
     status: true,
     message:

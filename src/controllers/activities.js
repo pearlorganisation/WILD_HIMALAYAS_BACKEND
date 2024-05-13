@@ -7,13 +7,14 @@ import activities from "../models/activities.js";
 // @desc - creating new activity
 // @route - POST api/v1/activity
 export const newActivity = asyncHandler(async (req, res, next) => {
-  const result= cloudinary.uploader.upload(req.files.path)
 
-    const { logo, banners } = req?.files;
-      
-    // Upload files to Cloudinary
-   const logoResult = await cloudinary.uploader.upload(logo[0].path);
-   const bannersResults = await Promise.all(banners.map(file => cloudinary.uploader.upload(file.path)));
+  const { logo, banners } = req?.files;
+  
+  // Upload files to Cloudinary
+  const logoResult = await cloudinary.uploader.upload(logo[0].path);
+  const bannersResults = await Promise.all(banners.map(file => cloudinary.uploader.upload(file.path)));
+  // console.log(logo)
+  // console.log(first)
 
 
 

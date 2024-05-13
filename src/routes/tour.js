@@ -7,7 +7,7 @@ const router = express.Router();
 router
   .route("/")
   .post(
-    upload.single("banner"),
+    upload.fields([{name:"banner"},{name:"mapLogo"},{name:"itineraryLogo"}]),
     newTour
   )
   .get(getAllTours);
