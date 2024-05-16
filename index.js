@@ -44,17 +44,24 @@ app.listen(port, () => {
 import authRoutes from "./src/routes/auth.js";
 import trekRoutes from "./src/routes/trek.js";
 import { error } from "./src/middlewares/error.js";
+
 import mailRoutes from "./src/routes/mail.js";
 import activityRoutes from "./src/routes/activities.js";
 import tourRoutes from "./src/routes/tour.js";
 import overViewRoutes from "./src/routes/overview.js";
+
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/trek", trekRoutes);
 app.use("/api/v1/mail", mailRoutes);
 app.use("/api/v1/activity", activityRoutes);
 app.use("/api/v1/tour", tourRoutes);
+
+app.use("/api/v1/contactUs", contactUsRoutes);
+
+
 app.use("/api/v1/overview", overViewRoutes);
+
 app.use("/", (req, res) => {
   res.send("Welcome to wild himalayas");
 });

@@ -15,8 +15,8 @@ export const sendMail = async (email,finalUrl
         port: 465,
         service: "gmail",
         auth: {
-          user: 'avnish@pearlorganisation.com',
-          pass: 'gfskizvajvbhgaol',
+          user: process.env.NODEMAILER_EMAIL,
+          pass: process.env.NODEMAILER_PASSWORD,
         },
       });
 

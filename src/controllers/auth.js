@@ -36,7 +36,7 @@ export const signup = asyncHandler(async (req, res, next) => {
 
   const token = generateSignupToken(req?.body);
 
-  const finalUrl = `${url}/${token}`;
+  const finalUrl = `${url}${token}`;
   ///// nodemailer ////////
 
   sendMail(email, finalUrl, token)
