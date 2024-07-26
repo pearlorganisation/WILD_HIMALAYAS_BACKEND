@@ -14,6 +14,7 @@ app.use(
             "http://localhost:5173",
             "http://localhost:5174",
             "http://localhost:5175",
+            "https://wild-himalayas-mern.vercel.app/",
           ],
           credentials: true,
         }
@@ -22,6 +23,7 @@ app.use(
             "http://localhost:5173",
             "http://localhost:5174",
             "http://localhost:5175",
+            "https://wild-himalayas-mern.vercel.app/",
           ],
           methods: ["GET", "PUT", "POST", "PATCH", "DELETE"],
           allowedHeaders: ["Content-Type", "Authorization", "x-csrf-token"],
