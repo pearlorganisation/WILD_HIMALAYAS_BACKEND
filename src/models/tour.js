@@ -39,10 +39,6 @@ const tourSchema = new mongoose.Schema(
       type: String,
       required: [true, "Difficulty is Required"],
     },
-    maxGroupSize: {
-      type: Number,
-      required: [true, "Difficulty is Required"],
-    },
     highestPoint: {
       type: String,
       required: [true, "Highest Point is Required"],
@@ -74,6 +70,7 @@ const tourSchema = new mongoose.Schema(
     },
   },
   { timestamps: true }
+
 );
 
 export default mongoose.model("tour", tourSchema);

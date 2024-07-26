@@ -7,9 +7,9 @@ import tour from "../models/tour.js";
 // @route - POST api/v1/tour
 
 export const newTour = asyncHandler(async (req, res, next) => {
-  console.log(req?.body)
+
   const { mapLogo,itineraryLogo, banners, gallery } = req?.files;
-console.log( req?.files)
+
   const itineraryLogoResult = await cloudinary.uploader.upload(itineraryLogo[0]?.path)
   const mapLogoResult = await cloudinary.uploader.upload(mapLogo[0]?.path)
   const galleryResults = await Promise.all(gallery.map(file => cloudinary.uploader.upload(file.path)));
