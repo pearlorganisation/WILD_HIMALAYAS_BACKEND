@@ -11,13 +11,13 @@ app.use(
     process.env.NODE_ENV === "production"
       ? {
           origin: ["http://localhost:5173","http://localhost:5174","http://localhost:5175","https://wild-himalayas-mern.vercel.app"],
-          credentials: true,
+          // credentials: true,
         }
       : {
           origin: ["http://localhost:5173","http://localhost:5174","http://localhost:5175","https://wild-himalayas-mern.vercel.app"],
           methods: ["GET", "PUT", "POST", "PATCH", "DELETE"],
           allowedHeaders: ["Content-Type", "Authorization", "x-csrf-token"],
-          credentials: true,
+          // credentials: true,
           maxAge: 600,
           exposedHeaders: ["*", "Authorization"],
         }
