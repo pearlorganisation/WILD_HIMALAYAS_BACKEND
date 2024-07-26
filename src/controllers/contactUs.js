@@ -32,3 +32,16 @@ res
       data,
     });
   });
+
+  // @desc - delete particular contactUsData
+// @route - GET api/v1/contactUs/:id
+
+export const deleteContactUs = asyncHandler(async (req, res, next) => {
+    const isValidId = await contactUs.findByIdAndDelete(req?.params?.id);
+    if (!isValidId)
+      return new errorResponse("No Contact found with given id!!", 400);
+  
+    res
+      .status(200)
+      .json({ status: true, message: "Contact deleted successfully!!" });
+  });

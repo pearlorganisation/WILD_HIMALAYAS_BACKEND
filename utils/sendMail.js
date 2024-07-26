@@ -25,7 +25,7 @@ export const sendMail = async (email,finalUrl
       let data = await ejs.renderFile(templatePath,{email,finalUrl});
 
       let   mailOptions = {
-        from: "avnish@pearlorganisation.com",
+        from: process.env.NODEMAILER_EMAIL,
         to: email,
         subject: "WildHimalayas Email Verification for creating a new account",
         html: data,
