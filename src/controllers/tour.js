@@ -7,23 +7,28 @@ import tour from "../models/tour.js";
 // @route - POST api/v1/tour
 
 export const newTour = asyncHandler(async (req, res, next) => {
-  const { mapLogo,itineraryLogo, banner } = req?.files;
-
-  const BannerResult = await cloudinary.uploader.upload(banner[0]?.path)
+  console.log(req?.body)
+  const { mapLogo,itineraryLogo, banners, gallery } = req?.files;
+console.log( req?.files)
   const itineraryLogoResult = await cloudinary.uploader.upload(itineraryLogo[0]?.path)
   const mapLogoResult = await cloudinary.uploader.upload(mapLogo[0]?.path)
+  const galleryResults = await Promise.all(gallery.map(file => cloudinary.uploader.upload(file.path)));
+  const bannersResults = await Promise.all(banners.map(file => cloudinary.uploader.upload(file.path)));
 
   const newDoc = new tour({
     ...req?.body,
-    banner: BannerResult?.secure_url,
+    gallery: galleryResults.map(result => result.secure_url),
+    banners: bannersResults.map(result => result.secure_url),
     itineraryLogo: itineraryLogoResult?.secure_url,
     mapLogo: mapLogoResult?.secure_url,
     tripHighlights: JSON.parse(req?.body?.tripHighlights),
+    availableDates: JSON.parse(req?.body?.availableDates),
+    season: JSON.parse(req?.body?.season),
   });
   await newDoc.save();
   res
     .status(201)
-    .json({ status: true, message: "New trek created successfully!!" });
+    .json({ status: true, message: "New tour created successfully!!" });
 });
 
 // @desc - delete particular tour

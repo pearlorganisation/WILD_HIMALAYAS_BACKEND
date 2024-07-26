@@ -26,9 +26,6 @@ export const signup = asyncHandler(async (req, res, next) => {
   if (existingUser)
     return next(new errorResponse("User already exists!!", 400));
 
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-
   const url =
     process.env.NODE_ENV === "PRODUCTION"
       ? process.env.FRONTEND_LIVE_URL

@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllContactUs, newContact } from "../controllers/contactUs.js";
+import { deleteContactUs, getAllContactUs, newContact } from "../controllers/contactUs.js";
 
 
 const router = express.Router();
@@ -12,5 +12,5 @@ router
   )
   .get(getAllContactUs);
 
-// router.route("/:id").delete(deleteActivity);
+router.route("/:id").delete(deleteContactUs);
 export default router;
