@@ -81,7 +81,7 @@ export const login = asyncHandler(async (req, res, next) => {
       expires: cookieValidity,
     })
     .status(200)
-    .json({ status: true, message: "Logged in successfully!!" });
+    .json({ status: true, message: "Logged in successfully!!" , data:existingUser });
 });
 
 // @desc - logout user
