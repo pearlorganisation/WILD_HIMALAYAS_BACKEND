@@ -11,15 +11,7 @@ import signupOtp from "../models/signupOtp.js";
 // @route - POST api/v1/auth/signup
 export const signup = asyncHandler(async (req, res, next) => {
   const {
-    email,
-    password,
-    firstName,
-    lastName,
-    number,
-    weight,
-    dob,
-    city,
-    height,
+    email
   } = req?.body;
 
   const existingUser = await auth.findOne({ email });
@@ -81,7 +73,7 @@ export const login = asyncHandler(async (req, res, next) => {
       expires: cookieValidity,
     })
     .status(200)
-    .json({ status: true, message: "Logged in successfully!!" , data:existingUser });
+    .json({ status: true, message: "Logged in successfully!!" , data: existingUser });
 });
 
 // @desc - logout user
