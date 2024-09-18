@@ -1,7 +1,7 @@
 import express from "express";
 
 import upload from "../middlewares/multer.js";
-import { getAllProducts, newProduct } from "../controllers/product.js";
+import { deleteProduct, getAllProducts, newProduct } from "../controllers/product.js";
 
 const router = express.Router();
 
@@ -15,5 +15,8 @@ router
   )
   .get(getAllProducts);
 
-// router.route("/:id").delete(deleteActivity);
+router
+  .route("/:id")
+  .delete(deleteProduct)
+
 export default router;
