@@ -8,14 +8,13 @@ import product from "../models/product.js";
 // @desc - creating new product
 // @route - POST api/v1/product
 export const newProduct = asyncHandler(async (req, res, next) => {
-
+  
   const { banners } = req?.files;
   
   // Upload files to Cloudinary
   const bannersResults = await Promise.all(banners.map(file => cloudinary.uploader.upload(file.path)));
 
   const { price, ...rest } = req?.body;
-
     const newDoc = new product({
       ...req?.body,
        banners: bannersResults.map(result => result.secure_url),
@@ -45,7 +44,7 @@ export const newProduct = asyncHandler(async (req, res, next) => {
   // @desc - delete particular product
 // @route - GET api/v1/product/:id
 export const deleteProduct = asyncHandler(async (req, res, next) => {
-    const isValidId = await activities.findByIdAndDelete(req?.params?.id);
+    const isValidId = await product.findByIdAndDelete(req?.params?.id);
     if (!isValidId)
       return new errorResponse("No trek found with given id!!", 400);
   
