@@ -15,6 +15,11 @@ const bookingSchema = new mongoose.Schema(
       type: String,
       required: [true, "Email required "],
     },
+    tourId:{
+      type:mongoose.Types.ObjectId,
+      required:[true,"Tour Id is required"],
+      ref:"tour"
+    },
     tourDate: {
       startDate: String,
       endDate: String,

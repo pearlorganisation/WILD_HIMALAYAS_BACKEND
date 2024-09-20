@@ -6,13 +6,14 @@ import crypto from "crypto";
 
 export const bookingOrder = asyncHandler(async (req, res, next) => {
 
-    const {amount,orderById,email,memberNames,tourDate} = req?.body
+    const {amount,orderById,email,memberNames,tourDate,tourId} = req?.body
     const newBooking = await booking.create({
       amount: amount,
       memberNames: memberNames,
       orderById: orderById,
       email: email,
-      tourDate:tourDate
+      tourDate:tourDate,
+      tourId:tourId
     });
   
     const options = {
@@ -77,3 +78,14 @@ export const bookingOrder = asyncHandler(async (req, res, next) => {
         .json({ status: false, message: e?.message || "Internal server error" });
     }
   });
+
+  export const getAllBookings = asyncHandler(async(req,res)=>{
+    const data = await booking.find().sort({createdAt:-1}).populate("tourId")
+    
+    res.status(200).json({
+      status: true,
+      message:
+        data?.length >= 1 ? "data found successfully!!" : "No data found!!",
+      data,
+    });
+  })
