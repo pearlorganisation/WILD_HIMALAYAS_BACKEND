@@ -34,7 +34,6 @@ app.listen(port, () => {
 
 // @@desc-----route section------
 import authRoutes from "./src/routes/auth.js";
-import trekRoutes from "./src/routes/trek.js";
 import { error } from "./src/middlewares/error.js";
 import mailRoutes from "./src/routes/mail.js"
 import activityRoutes from "./src/routes/activities.js"
@@ -44,7 +43,6 @@ import productRoutes from "./src/routes/product.js"
 import bookingRouter from "./src/routes/booking.js";
 
 app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/trek", trekRoutes);
 app.use("/api/v1/mail", mailRoutes);
 app.use("/api/v1/activity", activityRoutes);
 app.use("/api/v1/tour", tourRoutes);
