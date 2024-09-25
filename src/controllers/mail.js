@@ -1,6 +1,8 @@
 import auth from "../models/auth.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt"
+import { sendOrderMail } from "../../utils/sendOrderMail.js";
+import { asyncHandler } from "../../utils/asyncHandler.js";
 // -----------------------------------------------------------------------------------------------------------
 
 export const verifySignupOtp = async (req, res) => {
@@ -36,3 +38,31 @@ export const verifySignupOtp = async (req, res) => {
     });
   }
 };
+
+export const OrderMail = asyncHandler(async (req, res, next) => {
+  const { id } = req?.params;
+ 
+  const { paymentType, createdAt, amount, email } = req?.body;
+
+  // date conversion of createdAt
+  let date = "";
+  try {
+    const dateParts = createdAt.split("T")[0].split("-"); // Split date part and then split by hyphen
+    date = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`; // Rearrange to 'dd-mm-yyyy'
+  } catch (error) {
+    return res.status(400).json({ message: "Invalid date format" });
+  }
+
+  sendOrderMail(email, id, amount, date, paymentType).then(()=>{
+    res.status(200).json({
+      status: true,
+      message: "Mail Sent Successfully",
+    });
+  }).catch((error)=>{
+    console.log(error)
+  })
+ 
+});
+
+
+

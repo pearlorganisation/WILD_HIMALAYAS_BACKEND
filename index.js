@@ -41,6 +41,7 @@ import tourRoutes from "./src/routes/tour.js"
 import contactUsRoutes from "./src/routes/contactUs.js"
 import productRoutes from "./src/routes/product.js"
 import bookingRouter from "./src/routes/booking.js";
+import orderRouter from "./src/routes/order.js";
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/mail", mailRoutes);
@@ -49,6 +50,7 @@ app.use("/api/v1/tour", tourRoutes);
 app.use("/api/v1/contactUs", contactUsRoutes);
 app.use("/api/v1/product", productRoutes);
 app.use("/api/v1/booking", bookingRouter);
+app.use("/api/v1/order", orderRouter);
 
 app.use("/", (req, res) => {
   res.send("Welcome to wild himalayas");
