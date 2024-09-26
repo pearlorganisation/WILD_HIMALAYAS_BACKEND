@@ -79,8 +79,24 @@ export const bookingOrder = asyncHandler(async (req, res, next) => {
     }
   });
 
+  export const getParticularBookings = asyncHandler(async(req,res)=>{
+    const {id}= req?.params
+    const data = await booking.find({
+      $or:[
+       { orderById:id},
+       { isBookedSuccessfully:true}
+    ]
+    }).sort({createdAt:-1}).populate("tourId")
+    
+    res.status(200).json({
+      status: true,
+      message:
+        data?.length >= 1 ? "data found successfully!!" : "No data found!!",
+      data,
+    });
+  })
   export const getAllBookings = asyncHandler(async(req,res)=>{
-    const data = await booking.find().sort({createdAt:-1}).populate("tourId")
+    const data = await booking.find({isBookedSuccessfully:true}).sort({createdAt:-1}).populate("tourId")
     
     res.status(200).json({
       status: true,

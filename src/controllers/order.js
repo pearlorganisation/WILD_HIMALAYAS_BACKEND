@@ -112,3 +112,21 @@ export const createOrder = asyncHandler(async (req, res, next) => {
       data,
     });
   })
+
+  export const getParticularOrders = asyncHandler(async(req,res)=>{
+    const {id}= req?.params
+    const data = await order.find({
+      $or:[
+        {orderById:id},
+        {isBookedSuccessfully:true},
+        {isBookedSuccessfully:{$exists:false}}
+      ]
+    }).sort({createdAt:-1}).populate("product.productId")
+    
+    res.status(200).json({
+      status: true,
+      message:
+        data?.length >= 1 ? "data found successfully!!" : "No data found!!",
+      data,
+    });
+  })
