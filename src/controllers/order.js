@@ -1,19 +1,19 @@
 import { razorpayInstance } from "../../configs/razorpay.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
-import booking from "../models/booking.js";
 import crypto from "crypto";
+import order from "../models/order.js";
 
 
-export const bookingOrder = asyncHandler(async (req, res, next) => {
+export const createOrder = asyncHandler(async (req, res, next) => {
 
-    const {amount,orderById,email,memberNames,tourDate,tourId} = req?.body
-    const newBooking = await booking.create({
-      amount: amount,
-      memberNames: memberNames,
-      orderById: orderById,
-      email: email,
-      tourDate:tourDate,
-      tourId:tourId
+    const {amount,orderById,email,product,address} = req?.body
+    const newBooking = await order.create({
+      amount,
+      orderById,
+      email,
+      paymentType: "Online Paid",
+      product,
+      address,
     });
   
     const options = {
@@ -31,7 +31,7 @@ export const bookingOrder = asyncHandler(async (req, res, next) => {
         });
       })
       .catch(async (err) => {
-        await booking.findByIdAndDelete(newBooking._id);
+        await order.findByIdAndDelete(newBooking._id);
         return res.status(400).json({
           status: false,
           message: err?.message || err,
@@ -56,11 +56,11 @@ export const bookingOrder = asyncHandler(async (req, res, next) => {
       const isAuthentic = expectedSignature === razorpay_signature;
   
       if (!isAuthentic) {
-        await booking.findByIdAndDelete(req?.params?.id);
+        await order.findByIdAndDelete(req?.params?.id);
         return res.redirect(`${process.env.FRONTEND_LIVE_URL}/paymentFailed/`);
       }
   
-      const updateBooking = await booking.findByIdAndUpdate(req?.params?.id, {
+      const updateBooking = await order.findByIdAndUpdate(req?.params?.id, {
         razorpay_order_id,
         isBookedSuccessfully: true,
         razorpay_payment_id,
@@ -72,21 +72,38 @@ export const bookingOrder = asyncHandler(async (req, res, next) => {
         data: updateBooking,
       });
     } catch (e) {
-      await booking.findByIdAndDelete(req?.params?.id);
+      await order.findByIdAndDelete(req?.params?.id);
       res
         .status(400)
         .json({ status: false, message: e?.message || "Internal server error" });
     }
   });
 
-  export const getParticularBookings = asyncHandler(async(req,res)=>{
-    const {id}= req?.params
-    const data = await booking.find({
+  export const codOrder= asyncHandler(async(req,res)=>{
+    const {amount,orderById,email,product,address} = req?.body
+    const newBooking = await order.create({
+      amount,
+      orderById,
+      email,
+      paymentType: "Cash on delivery",
+      product,
+      address,
+    });
+
+    res.status(201).json({
+      status:true,
+      message:"Cash on Delivery order is placed.",
+      data : newBooking
+    })
+  })
+
+  export const getAllOrders = asyncHandler(async(req,res)=>{
+    const data = await order.find({
       $or:[
-       { orderById:id},
-       { isBookedSuccessfully:true}
-    ]
-    }).sort({createdAt:-1}).populate("tourId")
+        {isBookedSuccessfully:true},
+        {isBookedSuccessfully:{$exists:false}}
+      ]
+    }).sort({createdAt:-1}).populate("product.productId").populate("orderById")
     
     res.status(200).json({
       status: true,
@@ -95,8 +112,16 @@ export const bookingOrder = asyncHandler(async (req, res, next) => {
       data,
     });
   })
-  export const getAllBookings = asyncHandler(async(req,res)=>{
-    const data = await booking.find({isBookedSuccessfully:true}).sort({createdAt:-1}).populate("tourId")
+
+  export const getParticularOrders = asyncHandler(async(req,res)=>{
+    const {id}= req?.params
+    const data = await order.find({
+      $or:[
+        {orderById:id},
+        {isBookedSuccessfully:true},
+        {isBookedSuccessfully:{$exists:false}}
+      ]
+    }).sort({createdAt:-1}).populate("product.productId")
     
     res.status(200).json({
       status: true,
