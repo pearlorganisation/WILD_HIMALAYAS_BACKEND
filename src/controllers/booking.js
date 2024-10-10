@@ -2,6 +2,7 @@ import { razorpayInstance } from "../../configs/razorpay.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import booking from "../models/booking.js";
 import crypto from "crypto";
+import tour from "../models/tour.js";
 
 
 export const bookingOrder = asyncHandler(async (req, res, next) => {
@@ -42,9 +43,11 @@ export const bookingOrder = asyncHandler(async (req, res, next) => {
 
   export const verifyOrder = asyncHandler(async (req, res) => {
     try {
-      const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+      const { razorpay_order_id, razorpay_payment_id, razorpay_signature, tourDate,tourId,memberNames } =
       await req.body;
-      console.log(req.body)
+
+      const {startDate,endDate} = tourDate
+      // console.log(req.body)
   
       const body = razorpay_order_id + "|" + razorpay_payment_id;
   
@@ -59,12 +62,27 @@ export const bookingOrder = asyncHandler(async (req, res, next) => {
         await booking.findByIdAndDelete(req?.params?.id);
         return res.redirect(`${process.env.FRONTEND_LIVE_URL}/paymentFailed/`);
       }
-  
       const updateBooking = await booking.findByIdAndUpdate(req?.params?.id, {
         razorpay_order_id,
         isBookedSuccessfully: true,
         razorpay_payment_id,
       });
+
+          // Find the tour by the startDate and endDate in availableDates
+    const tourData = await tour.findById(tourId);
+
+console.log(tourData, "hsdvbsdvsdbvsdv")
+     // Find the specific date in the availableDates array
+     const dateToUpdate = tourData.availableDates.find(
+      (date) => date.startDate === startDate && date.endDate === endDate
+    );
+    console.log(dateToUpdate)
+        if (dateToUpdate) {
+          // Update totalBooked and vacantSeats
+          dateToUpdate.totalBooked = (dateToUpdate.totalBooked || 0) + memberNames;
+          // Save the updated tour document
+          await tourData.save();
+        }
   
       res.status(200).json({
         status: true,

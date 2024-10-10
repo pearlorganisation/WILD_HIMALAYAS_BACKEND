@@ -61,9 +61,23 @@ const tourSchema = new mongoose.Schema(
     },
     inclusionsAndExclusions: {
       type: String,
-      required: [true, "Inclusion and Exclusion is required !!"],
+      // required: [true, "Inclusion and Exclusion is required !!"],
     },
-    availableDates: [{ startDate: String, endDate: String ,vacant:Number,}],
+    availableDates: [
+      { startDate: String, endDate: String ,
+        totalSeats:
+        {type:Number},
+        totalBooked:{
+          type:Number,
+        default: 0}
+        ,vacantSeats:{
+          type:Number,
+         default: function () {
+          return this.totalSeats; // Set vacantSeats to be equal to totalSeats by default
+        },
+      }}
+
+    ],
     season: {
       type: [],
       required: [true, "Season is required!!"],
@@ -72,5 +86,13 @@ const tourSchema = new mongoose.Schema(
   { timestamps: true }
 
 );
+
+// Pre-save middleware to ensure vacantSeats is correctly calculated
+tourSchema.pre("save", function (next) {
+  this.availableDates.forEach((date) => {
+    date.vacantSeats = date.totalSeats - date.totalBooked;
+  });
+  next();
+});
 
 export default mongoose.model("tour", tourSchema);
