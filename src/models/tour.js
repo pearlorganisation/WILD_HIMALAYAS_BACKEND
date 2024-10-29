@@ -51,16 +51,23 @@ const tourSchema = new mongoose.Schema(
       type: String,
       required: [true, "Itinerary is required!!"],
     },
-    itineraryLogo: {
-      type: String,
-      required: [true, "Itinerary Logo is required!!"],
+    region: {
+      type: mongoose.Types.ObjectId,
+      required: [true, "Region is required!!"],
+    },
+    months: {
+      type: [],
+      required: [true, "Month is required!!"],
     },
     mapLogo: {
-      type: String,
-      required: [true, "Map Logo is required !!"],
+      type: {},
     },
-    inclusionsAndExclusions: {
-      type: String,
+    inclusions: {
+      type: [],
+      // required: [true, "Inclusion and Exclusion is required !!"],
+    },
+    exclusions: {
+      type: [],
       // required: [true, "Inclusion and Exclusion is required !!"],
     },
     availableDates: [
