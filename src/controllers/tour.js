@@ -1,3 +1,4 @@
+import { isValidObjectId } from "mongoose";
 import { cloudinary } from "../../configs/cloudinary.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import errorResponse from "../../utils/errorResponse.js";
@@ -59,7 +60,42 @@ export const deleteTour = asyncHandler(async (req, res, next) => {
 // @route - GET api/v1/tour
 
 export const getAllTours = asyncHandler(async (req, res, next) => {
-  const data = await tour.find().populate("activity");
+  const data = await tour.find().populate("activity").populate("region");
+
+  res.status(200).json({
+    status: true,
+    message:
+      data?.length >= 1 ? "data found successfully!!" : "No data found!!",
+    data,
+  });
+});
+
+export const getSpecificTours = asyncHandler(async (req, res, next) => {
+
+  const {id} = req?.params
+  const data = await tour.find({activity:id}).populate("region");
+
+  if (!data)
+    return new errorResponse("No Tour found with given id!!", 400);
+
+
+  res.status(200).json({
+    status: true,
+    message:
+      data?.length >= 1 ? "data found successfully!!" : "No data found!!",
+    data,
+  });
+});
+
+export const getSpecificRegionTours = asyncHandler(async (req, res, next) => {
+  const {id} = req?.params
+
+  const data = await tour.find({region:id}).populate("region");
+
+  if (!data)
+    return new errorResponse("No Tour found with given id!!", 400);
+
+
   res.status(200).json({
     status: true,
     message:

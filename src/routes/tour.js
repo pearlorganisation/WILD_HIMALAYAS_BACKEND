@@ -1,7 +1,7 @@
 import express from "express";
 
 import upload from "../middlewares/multer.js";
-import { deleteTour, getAllTours, newTour } from "../controllers/tour.js";
+import { deleteTour, getAllTours, getSpecificRegionTours, getSpecificTours, newTour } from "../controllers/tour.js";
 const router = express.Router();
 
 router
@@ -12,6 +12,6 @@ router
   )
   .get(getAllTours);
 
-// router.route("/:season").get(getParticularSeasonTrek);
-router.route("/:id").delete(deleteTour);
+router.route("/:id").get(getSpecificTours).delete(deleteTour);
+router.route("/region/:id").get(getSpecificRegionTours)
 export default router;

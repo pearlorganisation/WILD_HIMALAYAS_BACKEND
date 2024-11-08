@@ -8,21 +8,13 @@ import activities from "../models/activities.js";
 // @route - POST api/v1/activity
 export const newActivity = asyncHandler(async (req, res, next) => {
 
-  const { logo, banners } = req?.files;
+  const { banners } = req?.files;
   
   // Upload files to Cloudinary
-  const logoResult = await cloudinary.uploader.upload(logo[0].path);
   const bannersResults = await Promise.all(banners.map(file => cloudinary.uploader.upload(file.path)));
-  // console.log(logo)
-  // console.log(first)
-
-
-
     const newDoc = new activities({
       ...req?.body,
-      logo:
-       logoResult?.secure_url,
-       banners: bannersResults.map(result => result.secure_url),
+       banners: bannersResults.map(result => result),
       
     });
     await newDoc.save();
@@ -50,6 +42,10 @@ export const deleteActivity = asyncHandler(async (req, res, next) => {
     if (!isValidId)
       return new errorResponse("No trek found with given id!!", 400);
   
+    const bannersPublicId = isValidId?.banners.map((img)=>img?.public_id
+  )
+  cloudinary.api.delete_resources([...bannersPublicId]).then(({ deleted }) => console.log(deleted))
+
     res
       .status(200)
       .json({ status: true, message: "Trek deleted successfully!!" });

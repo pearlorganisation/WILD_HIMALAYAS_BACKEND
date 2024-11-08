@@ -10,10 +10,6 @@ description:{
     type:String,
     required:[true,"Discription is required"]
 },
-logo:{
-    type:{},
-    required:[true,"Logo is required"]
-},
 banners:{
     type:[],
     required:[true,"Banners is required"]

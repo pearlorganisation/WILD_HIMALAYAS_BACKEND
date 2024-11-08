@@ -54,6 +54,7 @@ const tourSchema = new mongoose.Schema(
     region: {
       type: mongoose.Types.ObjectId,
       required: [true, "Region is required!!"],
+      ref:"region"
     },
     months: {
       type: [],
