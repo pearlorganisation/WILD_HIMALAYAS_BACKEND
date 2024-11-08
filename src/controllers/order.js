@@ -116,10 +116,14 @@ export const createOrder = asyncHandler(async (req, res, next) => {
   export const getParticularOrders = asyncHandler(async(req,res)=>{
     const {id}= req?.params
     const data = await order.find({
-      $or:[
+      $and:[
         {orderById:id},
-        {isBookedSuccessfully:true},
-        {isBookedSuccessfully:{$exists:false}}
+        {
+          $or: [
+            { isBookedSuccessfully: true },
+            { isBookedSuccessfully: { $exists: false } }
+          ]
+        }
       ]
     }).sort({createdAt:-1}).populate("product.productId")
     

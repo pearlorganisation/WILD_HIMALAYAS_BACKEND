@@ -100,7 +100,7 @@ console.log(tourData, "hsdvbsdvsdbvsdv")
   export const getParticularBookings = asyncHandler(async(req,res)=>{
     const {id}= req?.params
     const data = await booking.find({
-      $or:[
+      $and:[
        { orderById:id},
        { isBookedSuccessfully:true}
     ]
