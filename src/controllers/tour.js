@@ -90,7 +90,7 @@ export const getSpecificTours = asyncHandler(async (req, res, next) => {
 export const getSpecificRegionTours = asyncHandler(async (req, res, next) => {
   const {id} = req?.params
 
-  const data = await tour.find({region:id}).populate("region");
+  const data = await tour.find({region:id}).populate("activity").populate("region");
 
   if (!data)
     return new errorResponse("No Tour found with given id!!", 400);
