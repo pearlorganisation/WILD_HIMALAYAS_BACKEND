@@ -49,7 +49,6 @@ const tourSchema = new mongoose.Schema(
     },
     itinerary: {
       type: String,
-      required: [true, "Itinerary is required!!"],
     },
     region: {
       type: mongoose.Types.ObjectId,
